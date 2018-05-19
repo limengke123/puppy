@@ -1,7 +1,7 @@
 <template lang="pug">
   .wrapper
     NavBar(
-      :title="headerTitle",
+      title="title",
       left-text="返回",
       right-text="按钮",
       left-arrow,
@@ -22,4 +22,9 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+  @import '../style/mixin.styl'
+  .wrapper
+    position fixed
+    height $bottomHeight
+    width 100%
 </style>

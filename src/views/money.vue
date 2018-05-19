@@ -1,14 +1,33 @@
 <template lang="pug">
-  .wrapper hello money!!!
+  .wrapper
+    div hey1111
+    div hey
+    div hey
+    div hey
+    div hey
+    div hey
+    div hey
+    div hey
+    add-button(@handler="addMoney")
 </template>
 
 <script>
-export default {
-  name: 'money'
-}
+  import addButton from '../components/baseComponent/addButton.vue'
+  export default {
+    name: 'money',
+    components: {addButton},
+    methods: {
+      addMoney (e) {
+      }
+    }
+  }
 </script>
 
 <style lang="stylus" scoped>
-.wrapper
-  font-size 20px
+  @import '../style/mixin.styl'
+  .wrapper
+    font-size 20px
+    padding-bottom $bottomHeight
+    padding-top $bottomHeight
+    overflow-y auto
 </style>

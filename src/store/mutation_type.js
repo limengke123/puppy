@@ -1,3 +1,2 @@
 export default {
-  SET_FOOTER_ACTIVED: 'SET_FOOTER_ACTIVED'
 }
