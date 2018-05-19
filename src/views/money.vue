@@ -11,7 +11,7 @@
     div hey
     div hey
     add-button(@handler="showModal")
-    add-modal(:show="show")
+    add-modal(v-model="show")
 </template>
 
 <script>
@@ -27,8 +27,7 @@
     },
     methods: {
       showModal (e) {
-        console.log(this.show)
-        this.show = !this.show
+        this.show = true
       }
     }
   }
