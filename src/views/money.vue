@@ -1,23 +1,34 @@
 <template lang="pug">
   .wrapper
     div hey1111
+    div
+      i.iconfont.icon-income
+      i.iconfont.icon-food
     div hey
     div hey
     div hey
     div hey
     div hey
     div hey
-    div hey
-    add-button(@handler="addMoney")
+    add-button(@handler="showModal")
+    add-modal(:show="show")
 </template>
 
 <script>
   import addButton from '../components/baseComponent/addButton.vue'
+  import addModal from '../components/addModal.vue'
   export default {
     name: 'money',
-    components: {addButton},
+    components: {addButton, addModal},
+    data () {
+      return {
+        show: false
+      }
+    },
     methods: {
-      addMoney (e) {
+      showModal (e) {
+        console.log(this.show)
+        this.show = !this.show
       }
     }
   }
@@ -26,7 +37,7 @@
 <style lang="stylus" scoped>
   @import '../style/mixin.styl'
   .wrapper
-    font-size 20px
+    font-size 2rem
     padding-bottom $bottomHeight
     padding-top $bottomHeight
     overflow-y auto

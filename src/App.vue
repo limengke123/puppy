@@ -23,13 +23,12 @@ export default {
     font-family 'Avenir', Helvetica, Arial, sans-serif
     color $font
     text-align center
-    /*flex-direction column*/
-    /*justify-content space-between*/
-    /*max-width 100vw*/
-    /*height 100vh*/
-    /*display flex*/
 </style>
 
 <style lang="stylus">
   @import './style/reset.styl'
+</style>
+
+<style>
+  @import './style/iconfont/iconfont.css';
 </style>
