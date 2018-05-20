@@ -63,16 +63,25 @@
         // type为空的时候就去拿该分类下的第一项
         let name = this.type
         let money = +this.money.slice(1)
-        if (!this.name) {
+        const type = this.currentClass.name
+        if (type !== '收入') {
+          money = -money
+        }
+        if (!name) {
           name = this.classesDefaults[0]
         }
-        this.addMoneyList({
-          type: this.currentClass.name,
+        const obj = {
+          type,
           iconName: this.currentClass.iconName,
           color: this.currentClass.color,
           money,
           name,
-        })
+          date: Date.now()
+        }
+        // 这个是存到内存中去的
+        this.addMoneyList(obj)
+        // 这个存到localstorage中去的
+        this.$storage.addItem(obj)
         this.$toast.success({
           message: `添加成功`,
           duration: 1000

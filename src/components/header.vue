@@ -27,4 +27,5 @@ export default {
     position fixed
     height $bottomHeight
     width 100%
+    z-index 99
 </style>

@@ -176,5 +176,5 @@ export default {
     },
   ],
   isAddModelShow: false,
-  moneyList: []
+  moneyList: JSON.parse(localStorage.getItem('moneyList')) || []
 }
