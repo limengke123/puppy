@@ -1,4 +1,9 @@
 export default {
+  headerItem: {
+    title: '',
+    left: '',
+    right: '',
+  },
   footerItem: [
     {
       name: 'money',

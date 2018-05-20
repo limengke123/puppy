@@ -1,5 +1,11 @@
 import type from './mutation_type'
 export default {
+  [type.CHANGE_HEADER] (state, obj) {
+    state.headerItem = Object.create(null)
+    obj.title && (state.headerItem.title = obj.title)
+    obj.left && (state.headerItem.left = obj.left)
+    obj.right && (state.headerItem.right = obj.right)
+  },
   [type.CHANGE_CLASSES] (state, id) {
     if (state.moneyClasses[id].isActive === true) return
     state.moneyClasses.forEach(item => {

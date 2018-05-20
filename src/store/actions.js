@@ -1,5 +1,8 @@
 import type from './mutation_type'
 export default {
+  changeHeader ({commit}, obj) {
+    commit(type.CHANGE_HEADER, obj)
+  },
   changeClasses ({commit}, id) {
     commit(type.CHANGE_CLASSES, id)
   },

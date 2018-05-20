@@ -1,4 +1,7 @@
 export default {
+  headerItem (state) {
+    return state.headerItem
+  },
   footerItem (state) {
     return state.footerItem
   },

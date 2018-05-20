@@ -1,22 +1,52 @@
 <template lang="pug">
   .wrapper
     NavBar(
-      title="title",
-      left-text="返回",
-      right-text="按钮",
-      left-arrow,
+      :title="headerItem.title",
+      :right-text="headerItem.right",
+      :left-text="headerItem.left",
     )
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 import {NavBar} from 'vant'
 export default {
   components: {NavBar},
+  data () {
+    return {
+      infoObj: null
+    }
+  },
+  methods: {
+    ...mapActions([
+      'changeHeader'
+    ])
+  },
   computed: {
     ...mapGetters([
-      'headerTitle'
+      'headerItem'
     ])
+  },
+  watch: {
+    $route: {
+      immediate: true,
+      handler (val) {
+        const obj = Object.create(null)
+        switch (val.name) {
+          case 'money':
+            obj.title = '记账簿'
+            obj.right = '流水记录'
+            break
+          case 'note':
+            obj.title = '笔记'
+            break
+          case 'about':
+            obj.title = '其他'
+            break
+        }
+        this.changeHeader(obj)
+      }
+    }
   }
 }
 </script>
