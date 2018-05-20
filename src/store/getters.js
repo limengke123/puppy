@@ -5,8 +5,11 @@ export default {
   moneyClasses (state) {
     return state.moneyClasses
   },
-  classesDefaults (state) {
-    return state.moneyClasses.filter(item => item.isActive === true)[0].defaults
+  currentClass (state) {
+    return state.moneyClasses.filter(item => item.isActive === true)[0]
+  },
+  classesDefaults (state, getters) {
+    return getters.currentClass.defaults
   },
   isAddModelShow (state) {
     return state.isAddModelShow

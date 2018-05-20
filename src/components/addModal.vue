@@ -61,14 +61,17 @@
       },
       completeHandler () {
         // type为空的时候就去拿该分类下的第一项
-        let type = this.type
+        let name = this.type
         let money = +this.money.slice(1)
-        if (!this.type) {
-          type = this.classesDefaults[0]
+        if (!this.name) {
+          name = this.classesDefaults[0]
         }
         this.addMoneyList({
-          type,
+          type: this.currentClass.name,
+          iconName: this.currentClass.iconName,
+          color: this.currentClass.color,
           money,
+          name,
         })
         this.$toast.success({
           message: `添加成功`,
@@ -94,7 +97,8 @@
     computed: {
       ...mapGetters([
         'isAddModelShow',
-        'classesDefaults'
+        'classesDefaults',
+        'currentClass',
       ])
     }
   }

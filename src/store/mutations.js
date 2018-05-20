@@ -11,5 +11,8 @@ export default {
   },
   [type.UNSHIFT_MONEY_LIST] (state, list) {
     state.moneyList.unshift(list)
+  },
+  [type.RMEOVE_MONEY_ITEM] (state, index) {
+    state.moneyList.splice(index, 1)
   }
 }

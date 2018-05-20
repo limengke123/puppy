@@ -8,5 +8,8 @@ export default {
   },
   addMoneyList ({commit}, list = {}) {
     commit(type.UNSHIFT_MONEY_LIST, list)
+  },
+  removeMoneyItem ({commit}, index) {
+    commit(type.RMEOVE_MONEY_ITEM, index)
   }
 }
