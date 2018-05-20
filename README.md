@@ -2,6 +2,7 @@
 
 > a pwa demo created by vue
 
+可以访问[在线地址](http://limengke.gitee.io/#/)，`ios`系统可以添加到桌面使用。
 ## Build Setup
 
 ``` bash
