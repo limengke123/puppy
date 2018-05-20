@@ -174,5 +174,7 @@ export default {
         '其他',
       ]
     },
-  ]
+  ],
+  isAddModelShow: false,
+  moneyList: []
 }

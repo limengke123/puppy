@@ -8,7 +8,10 @@ export default {
   classesDefaults (state) {
     return state.moneyClasses.filter(item => item.isActive === true)[0].defaults
   },
-  classesDefaultValue (state) {
-
+  isAddModelShow (state) {
+    return state.isAddModelShow
+  },
+  moneyLists (state) {
+    return state.moneyList
   }
 }

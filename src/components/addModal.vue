@@ -1,5 +1,5 @@
 <template lang="pug">
-  Popup(:value="value", @input="showHandler", position="bottom")
+  Popup(:value="isAddModelShow", @input="showHandler", position="bottom", @click-overlay="hideHandler")
     .content
       Field.num(v-model="money", disabled)
       money-class
@@ -11,33 +11,31 @@
     @delete="deleteNumber",
     theme="custom",
     close-button-text="完成",
-    @blur="blurHandler",
-    @hide="hideHandler"
+    @_complete_="completeHandler",
+    ref="numberKeyBoard"
     )
 </template>
 
 <script>
+  import {mapActions, mapGetters} from 'vuex'
   import {Popup, NumberKeyboard, Field} from 'vant'
   import moneyClass from './moneyClass.vue'
   import classInput from './classInput.vue'
   export default {
     components: {Popup, NumberKeyboard, Field, moneyClass, classInput},
-    props: {
-      show: {
-        type: Boolean,
-        default: false
-      },
-    },
     data () {
       return {
         money: '￥0',
         type: '',
-        value: true
       }
     },
     methods: {
+      ...mapActions([
+        'toggleAddModal',
+        'changeClasses',
+        'addMoneyList',
+      ]),
       changeMoney (key) {
-        console.log(key)
         this.money = this.makeNumber(this.money, key)
       },
       makeNumber (prev, next) {
@@ -55,18 +53,49 @@
           this.money = this.money.substring(0, this.money.length - 1)
         }
       },
-      blurHandler () {
-        // console.log(arguments)
+      showHandler (isShow) {
+        this.toggleAddModal(isShow)
       },
       hideHandler () {
-        console.log(`hide`)
-        console.log(this.money)
-        console.log(this.type)
+        this.reset()
       },
-      showHandler (show) {
-        this.value = show
-        this.$emit('input', show)
+      completeHandler () {
+        // type为空的时候就去拿该分类下的第一项
+        let type = this.type
+        let money = +this.money.slice(1)
+        if (!this.type) {
+          type = this.classesDefaults[0]
+        }
+        this.addMoneyList({
+          type,
+          money,
+        })
+        this.$toast.success({
+          message: `添加成功`,
+          duration: 1000
+        })
+        this.toggleAddModal(false)
+        this.reset()
+      },
+      reset () {
+        this.money = '￥0'
+        this.changeClasses(0)
       }
+    },
+    mounted () {
+      // vant的坑，没有完成的事件
+      const numberKeyBoard = this.$refs.numberKeyBoard
+      const completeBtn = numberKeyBoard.$children[12]
+      // 点击事件还被阻止了，mmp，用touchstart
+      completeBtn.$el.addEventListener('touchstart', function () {
+        numberKeyBoard.$emit('_complete_')
+      })
+    },
+    computed: {
+      ...mapGetters([
+        'isAddModelShow',
+        'classesDefaults'
+      ])
     }
   }
 </script>

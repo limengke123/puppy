@@ -1,33 +1,24 @@
 <template lang="pug">
   .wrapper
-    div hey1111
-    div
-      i.iconfont.icon-income
-      i.iconfont.icon-food
-    div hey
-    div hey
-    div hey
-    div hey
-    div hey
-    div hey
+    money-list
     add-button(@handler="showModal")
-    add-modal(v-model="show")
+    add-modal
 </template>
 
 <script>
+  import {mapActions} from 'vuex'
   import addButton from '../components/baseComponent/addButton.vue'
   import addModal from '../components/addModal.vue'
+  import moneyList from '../components/moneyList.vue'
   export default {
     name: 'money',
-    components: {addButton, addModal},
-    data () {
-      return {
-        show: false
-      }
-    },
+    components: {addButton, addModal, moneyList},
     methods: {
-      showModal (e) {
-        this.show = true
+      ...mapActions([
+        'toggleAddModal'
+      ]),
+      showModal () {
+        this.toggleAddModal(true)
       }
     }
   }

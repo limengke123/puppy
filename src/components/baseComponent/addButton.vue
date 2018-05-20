@@ -1,5 +1,5 @@
 <template lang="pug">
-  .wrapper(@click="handler") +
+  .wrapper(@touchstart.stop.prevent="handler") +
 
 </template>
 

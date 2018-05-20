@@ -33,6 +33,7 @@
       }
     },
     watch: {
+      // 切换分类的时候，底部输入框重置
       classesDefaults () {
         this.tabs = 0
         this.$emit('input', '')
