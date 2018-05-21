@@ -116,7 +116,8 @@
 <style lang="stylus" scoped>
   @import '../style/mixin.styl'
   .content
-    padding-bottom 21.6rem // keyboard竟然他妈是fixed布局 真坑
+    // padding-bottom 21.6rem // keyboard竟然他妈是fixed布局 真坑
+    padding-bottom 18rem // keyboard竟然他妈是fixed布局 真坑
     .num
       font-size 4rem
 </style>
