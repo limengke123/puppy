@@ -21,17 +21,20 @@ export default {
   moneyLists (state) {
     return state.moneyList
   },
-  todayMoneyLists (state, getters) {
-    return getters.rangeMoneyLists(new Date())
-  },
   rangeMoneyLists (state, getters) {
     return (range) => {
-      const time = new Time(range)
-      const [startTime, endTime] = time.getRange()
+      console.log(1)
+      // const time = new Time(range)
+      const [startTime, endTime] = range
+
       return getters.moneyLists.filter(item => item.date >= startTime && item.date < endTime)
     }
   },
   isToday (state) {
     return state.isToday
+  },
+  renderList (state, getters) {
+    const range = state.range || new Time(new Date()).getRange()
+    return getters.rangeMoneyLists(range)
   }
 }

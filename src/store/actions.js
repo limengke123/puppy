@@ -12,10 +12,16 @@ export default {
   addMoneyList ({commit}, list = {}) {
     commit(type.UNSHIFT_MONEY_LIST, list)
   },
-  removeMoneyItem ({commit}, index) {
-    commit(type.RMEOVE_MONEY_ITEM, index)
+  removeMoneyItem ({commit}, item) {
+    commit(type.RMEOVE_MONEY_ITEM, item)
   },
   changeToday ({commit}, isToday) {
     commit(type.CHANGE_TODAY, isToday)
+  },
+  changeRenderList ({commit}, renderList) {
+    commit(type.CHANGE_RENDER_LIST, renderList)
+  },
+  changeRange ({commit}, range) {
+    commit(type.CHANGE_RANGE, range)
   }
 }

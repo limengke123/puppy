@@ -70,13 +70,16 @@
         if (!name) {
           name = this.classesDefaults[0]
         }
+        // 给每一条记录加上一个id,方便删除
+        const id = this.moneyLists.length > 0 ? (this.moneyLists[0].id + 1) : 0
         const obj = {
           type,
           iconName: this.currentClass.iconName,
           color: this.currentClass.color,
           money,
           name,
-          date: Date.now()
+          date: Date.now(),
+          id
         }
         // 这个是存到内存中去的
         this.addMoneyList(obj)
@@ -108,6 +111,7 @@
         'isAddModelShow',
         'classesDefaults',
         'currentClass',
+        'moneyLists',
       ])
     }
   }
@@ -116,15 +120,14 @@
 <style lang="stylus" scoped>
   @import '../style/mixin.styl'
   .content
-    // padding-bottom 21.6rem // keyboard竟然他妈是fixed布局 真坑
-    padding-bottom 18rem // keyboard竟然他妈是fixed布局 真坑
-    .num
-      font-size 4rem
+    padding-bottom 18rem
+    font-size 4rem
 </style>
 
 <style lang="stylus">
   @import '../style/mixin.styl'
   .num
     .van-field__control
-      color $font
+      color #676767
+      font-size 4rem
 </style>

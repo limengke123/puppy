@@ -6,7 +6,7 @@
         span.total-words(@touchstart.stop.prevent="changeDate") {{time}}合计
       span.total-value ￥{{costTotal}}
     template(v-if="renderList.length")
-      cell-swipe(v-for="(item,index) in renderList", :key="index", :right-width="65", :left-width="0", :on-close="(clickPosition, instance) => onClose(clickPosition, instance, index)")
+      cell-swipe(v-for="(item,index) in renderList", :key="index", :right-width="65", :left-width="0", :on-close="(clickPosition, instance) => onClose(clickPosition, instance, item)")
         cell-group
           cell
             template(slot="title")
@@ -39,16 +39,14 @@
         datePickerShow: false,
         currentDate: new Date(),
         time: '今日',
-        // 这里不能直接用computed里面todayMoneyLists, 因为vue实例化,先初始化state后处理computed
-        renderList: this.$store.getters.todayMoneyLists,
       }
     },
     computed: {
       ...mapGetters([
         'moneyLists',
-        'todayMoneyLists',
         'rangeMoneyLists',
         'isToday',
+        'renderList',
       ]),
       costTotal () {
         return this.renderList.reduce((accumulator, current) => accumulator + current.money, 0)
@@ -61,14 +59,15 @@
       },
       maxDate () {
         return new Date()
-      }
+      },
     },
     methods: {
       ...mapActions([
         'removeMoneyItem',
         'changeToday',
+        'changeRange',
       ]),
-      onClose (clickPosition, instance, index) {
+      onClose (clickPosition, instance, item) {
         switch (clickPosition) {
           case 'left':
           case 'cell':
@@ -84,8 +83,8 @@
                   message: `删除成功`,
                   duration: 1000
                 })
-                this.removeMoneyItem(index)
-                this.$storage.removeItem(index)
+                this.removeMoneyItem(item)
+                this.$storage.removeItem(item)
               } else {
                 instance.close()
               }
@@ -109,7 +108,8 @@
           this.changeToday(false)
         }
         const range = time.getRange()
-        this.renderList = this.rangeMoneyLists(range)
+        this.changeRange(range)
+        // this.renderList = this.rangeMoneyLists(range)
         this.datePickerShow = false
       }
     }

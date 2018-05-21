@@ -18,10 +18,20 @@ export default {
   [type.UNSHIFT_MONEY_LIST] (state, list) {
     state.moneyList.unshift(list)
   },
-  [type.RMEOVE_MONEY_ITEM] (state, index) {
-    state.moneyList.splice(index, 1)
+  [type.RMEOVE_MONEY_ITEM] (state, item) {
+    state.moneyList.forEach((val, index, arr) => {
+      if (val.id === item.id) {
+        arr.splice(index, 1)
+      }
+    })
   },
   [type.CHANGE_TODAY] (state, isToday) {
     state.isToday = isToday
+  },
+  [type.CHANGE_RENDER_LIST] (state, renderList) {
+    state.renderList = renderList
+  },
+  [type.CHANGE_RANGE] (state, range) {
+    state.range = range
   }
 }
