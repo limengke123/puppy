@@ -1,12 +1,12 @@
 <template lang="pug">
   .money-list-wrapper
-    template(v-if="moneyLists.length")
+    template(v-if="todayMoneyLists.length")
       cell
         template(slot="title")
           Icon.total-icon(name="gold-coin")
           span.total-words 今日合计
         span.total-value ￥{{costTotal}}
-      cell-swipe(v-for="(item,index) in moneyLists", :key="index", :right-width="65", :left-width="0", :on-close="(clickPosition, instance) => onClose(clickPosition, instance, index)")
+      cell-swipe(v-for="(item,index) in todayMoneyLists", :key="index", :right-width="65", :left-width="0", :on-close="(clickPosition, instance) => onClose(clickPosition, instance, index)")
         cell-group
           cell
             template(slot="title")
@@ -25,10 +25,11 @@
     components: {CellSwipe, CellGroup, Cell, Icon},
     computed: {
       ...mapGetters([
-        'moneyLists'
+        'moneyLists',
+        'todayMoneyLists',
       ]),
       costTotal () {
-        return this.moneyLists.reduce((accumulator, current) => accumulator + current.money, 0)
+        return this.todayMoneyLists.reduce((accumulator, current) => accumulator + current.money, 0)
       }
     },
     methods: {

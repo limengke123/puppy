@@ -1,3 +1,4 @@
+import Time from '../utils/time'
 export default {
   headerItem (state) {
     return state.headerItem
@@ -19,5 +20,15 @@ export default {
   },
   moneyLists (state) {
     return state.moneyList
+  },
+  todayMoneyLists (state, getters) {
+    return getters.rangeMoneyLists(new Date())
+  },
+  rangeMoneyLists (state, getters) {
+    return (range) => {
+      const time = new Time(range)
+      const [startTime, endTime] = time.getRange()
+      return getters.moneyLists.filter(item => item.date >= startTime && item.date < endTime)
+    }
   }
 }
