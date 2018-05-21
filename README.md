@@ -2,7 +2,17 @@
 
 > a pwa demo created by vue
 
-可以访问[在线地址](http://limengke.gitee.io/#/)，`ios`系统可以添加到桌面使用。
+可以访问[在线地址](https://limengke123.github.io/#/)，`ios`系统可以添加到桌面使用。
+或者扫描二维码：
+
+![二维码](/img/qrcode.png)
+
+## 图片
+
+![首页](/img/IMG_1779.PNG)
+![操作](/img/IMG_1780.PNG)
+![列表](/img/IMG_1781.PNG)
+![日期筛选](/img/IMG_1782.PNG)
 
 ## 待处理
 
