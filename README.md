@@ -1,6 +1,8 @@
-# puppy
-
-![logo](/static/img/icons/192.png)
+<br>
+<p align="center">
+  <img width="500px" src="img/logo.svg" alt="puppy" />
+</p>
+<br>
 
 > 一个记账本功能的pwa项目。
 
@@ -19,16 +21,29 @@ pwa应用和用啥框架没有关系，主要是`service-work`，这里因为`vu
 可以访问[在线地址](https://limengke123.github.io/#/)，`ios`系统可以添加到桌面使用。
 或者扫描二维码：
 
-![二维码](/img/qrcode.png)
+<p align="center">
+  <img width="300px" src="img/qrcode.png" alt="qrcode" />
+</p>
+<br>
+
 
 ## 图片
 
 ![首页](/img/IMG_1779.PNG)
-![操作](/img/IMG_1780.PNG)
-![列表](/img/IMG_1781.PNG)
-![日期筛选](/img/IMG_1782.PNG)
 
-## 待处理
+<details><summary>其他截图</summary><br>
+<p>操作</p>   
+<img width="100%" src="/img/IMG_1780.png" alt="操作" />
+<br>
+<p>列表</p>
+<img width="100%" src="/img/IMG_1781.png" alt="列表" />
+<br>
+<p>日期筛选</p>
+<img width="100%" src="/img/IMG_1782.png" alt="日期筛选" />
+<br>
+</details>
+
+## 待完成
 
 - [X] 时间处理类
 - [X] 流水记录(日期查询)
