@@ -55,7 +55,6 @@ export default {
   @import '../style/mixin.styl'
   .wrapper
     position fixed
-    height $bottomHeight
     width 100%
     z-index 99
 </style>

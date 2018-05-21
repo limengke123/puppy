@@ -1,12 +1,12 @@
 <template lang="pug">
   .money-list-wrapper
-    template(v-if="todayMoneyLists.length")
-      cell
-        template(slot="title")
-          Icon.total-icon(name="gold-coin")
-          span.total-words 今日合计
-        span.total-value ￥{{costTotal}}
-      cell-swipe(v-for="(item,index) in todayMoneyLists", :key="index", :right-width="65", :left-width="0", :on-close="(clickPosition, instance) => onClose(clickPosition, instance, index)")
+    cell.total
+      template(slot="title")
+        Icon.total-icon(name="gold-coin")
+        span.total-words(@touchstart.stop.prevent="changeDate") {{time}}合计
+      span.total-value ￥{{costTotal}}
+    template(v-if="renderList.length")
+      cell-swipe(v-for="(item,index) in renderList", :key="index", :right-width="65", :left-width="0", :on-close="(clickPosition, instance) => onClose(clickPosition, instance, index)")
         cell-group
           cell
             template(slot="title")
@@ -15,29 +15,60 @@
             span.value ￥{{item.money}}
         span(slot="right") 删除
     template(v-else)
-      span 今天还没有消费噢
+      .no-found
+        span 没有消费喔
+    transition(name="van-slide-bottom")
+      DatetimePicker.date-picker(
+      v-model="currentDate",
+      type="date",
+      :min-date="minDate",
+      :max-date="maxDate",
+      v-show="datePickerShow",
+      @cancel="onCancel",
+      @confirm="onConfirm")
 </template>
 
 <script>
   import {mapGetters, mapActions} from 'vuex'
-  import {CellSwipe, CellGroup, Cell, Dialog, Icon} from 'vant'
+  import {CellSwipe, CellGroup, Cell, Dialog, Icon, DatetimePicker} from 'vant'
+  import Time from '../utils/time'
   export default {
-    components: {CellSwipe, CellGroup, Cell, Icon},
+    components: {CellSwipe, CellGroup, Cell, Icon, DatetimePicker},
+    data () {
+      return {
+        datePickerShow: false,
+        currentDate: new Date(),
+        time: '今日',
+        // 这里不能直接用computed里面todayMoneyLists, 因为vue实例化,先初始化state后处理computed
+        renderList: this.$store.getters.todayMoneyLists,
+      }
+    },
     computed: {
       ...mapGetters([
         'moneyLists',
         'todayMoneyLists',
+        'rangeMoneyLists',
+        'isToday',
       ]),
       costTotal () {
-        return this.todayMoneyLists.reduce((accumulator, current) => accumulator + current.money, 0)
+        return this.renderList.reduce((accumulator, current) => accumulator + current.money, 0)
+      },
+      minDate () {
+        const date = new Date()
+        const year = date.getFullYear()
+        const beforeYear = `${year - 2}-1-1`
+        return new Date(beforeYear)
+      },
+      maxDate () {
+        return new Date()
       }
     },
     methods: {
       ...mapActions([
-        'removeMoneyItem'
+        'removeMoneyItem',
+        'changeToday',
       ]),
       onClose (clickPosition, instance, index) {
-        console.log(index)
         switch (clickPosition) {
           case 'left':
           case 'cell':
@@ -60,6 +91,26 @@
               }
             }).catch(console.log)
         }
+      },
+      changeDate () {
+        this.datePickerShow = !this.datePickerShow
+      },
+      onCancel () {
+        this.datePickerShow = false
+      },
+      onConfirm (value) {
+        const time = new Time(value)
+        const today = new Date()
+        if (time.getDateString() === `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`) {
+          this.changeToday(true)
+          this.time = '今日'
+        } else {
+          this.time = time.getDateString()
+          this.changeToday(false)
+        }
+        const range = time.getRange()
+        this.renderList = this.rangeMoneyLists(range)
+        this.datePickerShow = false
       }
     }
   }
@@ -87,11 +138,19 @@
     .value
       font-size 2.4rem
       color $font
+    .date-picker
+      position fixed
+      bottom 0
+      width 100%
+      z-index 99
 </style>
 
 <style lang="stylus">
   // 填vant的坑
   .money-list-wrapper
+    .total
+      .van-cell__title
+        flex 2
     .van-cell
       align-items center
     .van-cell__title

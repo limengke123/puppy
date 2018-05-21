@@ -10,6 +10,17 @@ class Time {
       return new Date(time)
     }
   }
+  getDateString (sperator = '/') {
+    /**
+     * @return
+     * 2015/5/12
+     * */
+    const obj = this.getDateObj(this.range)
+    const year = obj.getFullYear()
+    const month = obj.getMonth() + 1
+    const day = obj.getDate()
+    return `${year}${sperator}${month}${sperator}${day}`
+  }
   getRange () {
     /**
      * @param range 接受一个时间对象数组或是单个时间对象
@@ -25,7 +36,6 @@ class Time {
     return timeArr
   }
   getSingleDayLast (date) {
-    console.log(date)
     return new Date(date.setDate(date.getDate() + 1)).setHours(0, 0, 0, 0)
   }
   getSingleDayFirst (date) {

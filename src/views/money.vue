@@ -1,12 +1,12 @@
 <template lang="pug">
   .wrapper
     money-list
-    add-button(@handler="showModal")
+    add-button(@handler="showModal", v-show="isToday")
     add-modal
 </template>
 
 <script>
-  import {mapActions} from 'vuex'
+  import {mapActions, mapGetters} from 'vuex'
   import addButton from '../components/baseComponent/addButton.vue'
   import addModal from '../components/addModal.vue'
   import moneyList from '../components/moneyList.vue'
@@ -20,6 +20,11 @@
       showModal () {
         this.toggleAddModal(true)
       }
+    },
+    computed: {
+      ...mapGetters([
+        'isToday'
+      ])
     }
   }
 </script>
@@ -29,6 +34,6 @@
   .wrapper
     font-size 2rem
     padding-bottom $bottomHeight
-    padding-top $bottomHeight
+    padding-top 46px
     overflow-y auto
 </style>

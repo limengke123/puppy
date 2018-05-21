@@ -20,5 +20,8 @@ export default {
   },
   [type.RMEOVE_MONEY_ITEM] (state, index) {
     state.moneyList.splice(index, 1)
+  },
+  [type.CHANGE_TODAY] (state, isToday) {
+    state.isToday = isToday
   }
 }

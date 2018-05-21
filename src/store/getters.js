@@ -30,5 +30,8 @@ export default {
       const [startTime, endTime] = time.getRange()
       return getters.moneyLists.filter(item => item.date >= startTime && item.date < endTime)
     }
+  },
+  isToday (state) {
+    return state.isToday
   }
 }

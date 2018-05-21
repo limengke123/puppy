@@ -14,5 +14,8 @@ export default {
   },
   removeMoneyItem ({commit}, index) {
     commit(type.RMEOVE_MONEY_ITEM, index)
+  },
+  changeToday ({commit}, isToday) {
+    commit(type.CHANGE_TODAY, isToday)
   }
 }

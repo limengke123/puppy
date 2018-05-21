@@ -181,5 +181,6 @@ export default {
     },
   ],
   isAddModelShow: false,
-  moneyList: JSON.parse(localStorage.getItem('moneyList')) || []
+  moneyList: JSON.parse(localStorage.getItem('moneyList')) || [],
+  isToday: true
 }
