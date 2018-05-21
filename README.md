@@ -3,6 +3,19 @@
 > a pwa demo created by vue
 
 可以访问[在线地址](http://limengke.gitee.io/#/)，`ios`系统可以添加到桌面使用。
+
+## 待处理
+
+- [ ] 流水记录(日期查询)
+- [ ] 统计报表
+- [ ] 离线缓存
+- [ ] 闪屏处理
+- [ ] icon处理
+- [ ] 首部、底部icon、文字优化
+- [ ] 第二个模块(Note)
+- [ ] 第三个模块(About)
+
+
 ## Build Setup
 
 ``` bash
