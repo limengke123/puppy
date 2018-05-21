@@ -16,17 +16,17 @@
         span(slot="right") 删除
     template(v-else)
       .no-found
-        <!--i.iconfont.icon-not-found.icon-->
-        <!--.content 没有消费记录-->
-    transition(name="van-slide-bottom")
-      DatetimePicker.date-picker(
-      v-model="currentDate",
-      type="date",
-      :min-date="minDate",
-      :max-date="maxDate",
-      v-show="datePickerShow",
-      @cancel="onCancel",
-      @confirm="onConfirm")
+        i.iconfont.icon-not-found.icon
+        .content 没有消费记录
+    .fucking 到静安寺肯德基撒了
+    <!--transition(name="van-slide-bottom")-->
+    DatetimePicker.date-picker(
+    v-model="currentDate",
+    type="date",
+    :min-date="minDate",
+    :max-date="maxDate",
+    @cancel="onCancel",
+    @confirm="onConfirm")
 </template>
 
 <script>
@@ -140,10 +140,10 @@
       font-size 2.4rem
       color $font
     .date-picker
-      position fixed
-      bottom 0
+      // position fixed
+      // bottom 0
       width 100%
-      z-index 99
+      z-index 999
     .no-found
       margin-top 2rem
       .content
