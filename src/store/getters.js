@@ -23,7 +23,6 @@ export default {
   },
   rangeMoneyLists (state, getters) {
     return (range) => {
-      console.log(1)
       // const time = new Time(range)
       const [startTime, endTime] = range
 

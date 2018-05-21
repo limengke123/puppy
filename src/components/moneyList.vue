@@ -18,15 +18,17 @@
       .no-found
         i.iconfont.icon-not-found.icon
         .content 没有消费记录
-    .fucking 到静安寺肯德基撒了
-    <!--transition(name="van-slide-bottom")-->
-    DatetimePicker.date-picker(
-    v-model="currentDate",
-    type="date",
-    :min-date="minDate",
-    :max-date="maxDate",
-    @cancel="onCancel",
-    @confirm="onConfirm")
+    transition(name="van-slide-bottom")
+      DatetimePicker.date-picker(
+      type="date",
+      @cancel="onCancel",
+      @confirm="onConfirm",
+      :max-date="maxDate",
+      :min-date="minDate",
+      v-show="datePickerShow",
+      v-model="currentDate",
+      )
+
 </template>
 
 <script>
@@ -37,7 +39,7 @@
     components: {CellSwipe, CellGroup, Cell, Icon, DatetimePicker},
     data () {
       return {
-        datePickerShow: true,
+        datePickerShow: false,
         currentDate: new Date(),
         time: '今日',
       }
@@ -53,10 +55,11 @@
         return this.renderList.reduce((accumulator, current) => accumulator + current.money, 0)
       },
       minDate () {
-        const date = new Date()
-        const year = date.getFullYear()
-        const beforeYear = `${year - 2}-1-1`
-        return new Date(beforeYear)
+        const date = Date.now()
+        const before = date - 3 * 365 * 24 * 60 * 60 * 1000
+        // 这句话有坑
+        // const beforeYear = `${year - 2}-1-1`
+        return new Date(before)
       },
       maxDate () {
         return new Date()
@@ -140,8 +143,8 @@
       font-size 2.4rem
       color $font
     .date-picker
-      // position fixed
-      // bottom 0
+      position fixed
+      bottom 0
       width 100%
       z-index 999
     .no-found

@@ -120,7 +120,7 @@
 <style lang="stylus" scoped>
   @import '../style/mixin.styl'
   .content
-    padding-bottom 18rem
+    padding-bottom 21.6rem
     font-size 4rem
 </style>
 
