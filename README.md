@@ -1,6 +1,20 @@
 # puppy
 
-> a pwa demo created by vue
+![logo](/static/img/icons/192.png)
+
+> 一个记账本功能的pwa项目。
+
+## 技术栈
+
+`vue`三件套 = `vue` + `vuex` + `vue-router`
+
+ui = `vant`
+
+本地存储 = `localstorage`
+
+pwa应用和用啥框架没有关系，主要是`service-work`，这里因为`vue`有提供一个pwa的模板所以就直接用了，ui的组件库用了`vant`，这个库专注移动端，像数字键盘等组件还是很不错的。
+
+## 在线地址
 
 可以访问[在线地址](https://limengke123.github.io/#/)，`ios`系统可以添加到桌面使用。
 或者扫描二维码：
