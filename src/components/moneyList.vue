@@ -3,7 +3,7 @@
     cell.total
       template(slot="title")
         Icon.total-icon(name="gold-coin")
-        span.total-words(@touchstart.stop.prevent="changeDate") {{time}}合计
+        span.total-words(@touchstart="changeDate") {{time}}合计
       span.total-value ￥{{costTotal}}
     template(v-if="renderList.length")
       cell-swipe(v-for="(item,index) in renderList", :key="index", :right-width="65", :left-width="0", :on-close="(clickPosition, instance) => onClose(clickPosition, instance, item)")
@@ -16,7 +16,8 @@
         span(slot="right") 删除
     template(v-else)
       .no-found
-        span 没有消费喔
+        <!--i.iconfont.icon-not-found.icon-->
+        <!--.content 没有消费记录-->
     transition(name="van-slide-bottom")
       DatetimePicker.date-picker(
       v-model="currentDate",
@@ -36,7 +37,7 @@
     components: {CellSwipe, CellGroup, Cell, Icon, DatetimePicker},
     data () {
       return {
-        datePickerShow: false,
+        datePickerShow: true,
         currentDate: new Date(),
         time: '今日',
       }
@@ -143,10 +144,18 @@
       bottom 0
       width 100%
       z-index 99
+    .no-found
+      margin-top 2rem
+      .content
+        font-size 2rem
+        color $font
+      .icon-not-found
+        font-size 15rem
+        color $font
 </style>
 
 <style lang="stylus">
-  // 填vant的坑
+  // 填组件的坑
   .money-list-wrapper
     .total
       .van-cell__title
