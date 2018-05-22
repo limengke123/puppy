@@ -29,17 +29,17 @@ pwa应用和用啥框架没有关系，主要是`service-work`，这里因为`vu
 
 ## 图片
 
-![首页](/img/IMG_1779.PNG)
+<img width="40%" src="img/IMG_1779.PNG" alt="首页" />
 
 <details><summary>其他截图</summary><br>
 <p>操作</p>   
-<img width="100%" src="img/IMG_1780.PNG" alt="操作" />
+<img width="40%" src="img/IMG_1780.PNG" alt="操作" />
 <br>
 <p>列表</p>
-<img width="100%" src="img/IMG_1781.PNG" alt="列表" />
+<img width="40%" src="img/IMG_1781.PNG" alt="列表" />
 <br>
 <p>日期筛选</p>
-<img width="100%" src="img/IMG_1782.PNG" alt="日期筛选" />
+<img width="40%" src="img/IMG_1782.PNG" alt="日期筛选" />
 <br>
 </details>
 
