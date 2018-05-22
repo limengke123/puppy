@@ -18,10 +18,13 @@ export default {
   changeToday ({commit}, isToday) {
     commit(type.CHANGE_TODAY, isToday)
   },
-  changeRenderList ({commit}, renderList) {
-    commit(type.CHANGE_RENDER_LIST, renderList)
-  },
   changeRange ({commit}, range) {
     commit(type.CHANGE_RANGE, range)
+  },
+  changeTitleDate ({commit}, titleDate) {
+    commit(type.CHANGE_TITLE_DATE, titleDate)
+  },
+  changeDatePickerShow ({commit}, show) {
+    commit(type.CHANGE_DATEPICKER_SHOW, show)
   }
 }

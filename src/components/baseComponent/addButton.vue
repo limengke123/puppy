@@ -1,5 +1,5 @@
 <template lang="pug">
-  .wrapper(@touchstart.stop.prevent="handler") +
+  .wrapper(@touchstart.stop.prevent="handler", :style="styles") {{text}}
 
 </template>
 
@@ -7,6 +7,14 @@
   import {Button} from 'vant'
   export default {
     components: {vanButton: Button},
+    props: {
+      text: {
+        type: String
+      },
+      styles: {
+        type: Object
+      }
+    },
     methods: {
       handler (e) {
         this.$emit('handler', e)

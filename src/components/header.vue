@@ -1,9 +1,10 @@
 <template lang="pug">
-  .wrapper
+  .header-wrapper
     NavBar(
       :title="headerItem.title",
       :right-text="headerItem.right",
       :left-text="headerItem.left",
+      @click-right="onClickRight"
     )
 </template>
 
@@ -20,7 +21,13 @@ export default {
   methods: {
     ...mapActions([
       'changeHeader'
-    ])
+    ]),
+    onClickRight () {
+      this.$toast.fail({
+        message: '建设开发中',
+        duration: 1000
+      })
+    }
   },
   computed: {
     ...mapGetters([
@@ -35,13 +42,13 @@ export default {
         switch (val.name) {
           case 'money':
             obj.title = '记账簿'
-            obj.right = '流水记录'
+            obj.right = '统计'
             break
           case 'note':
             obj.title = '笔记'
             break
           case 'about':
-            obj.title = '其他'
+            obj.title = '关于'
             break
         }
         this.changeHeader(obj)
@@ -53,8 +60,14 @@ export default {
 
 <style lang="stylus" scoped>
   @import '../style/mixin.styl'
-  .wrapper
+  .header-wrapper
     position fixed
     width 100%
     z-index 99
+</style>
+
+<style lang="stylus">
+  @import '../style/mixin.styl'
+  .van-nav-bar__title
+    font-size 2rem
 </style>

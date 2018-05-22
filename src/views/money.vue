@@ -1,7 +1,9 @@
 <template lang="pug">
   .wrapper
     money-list
-    add-button(@handler="showModal", v-show="isToday")
+    add-button(@handler="showDatePicker", text="...", :styles="{backgroundColor: '#2b92d8', bottom: '15rem'}")
+    add-button(@handler="backToday", v-show="!isToday", text="<", :styles="{backgroundColor: '#ef6060'}")
+    add-button(@handler="showModal", v-show="isToday", text="+")
     add-modal
 </template>
 
@@ -10,15 +12,30 @@
   import addButton from '../components/baseComponent/addButton.vue'
   import addModal from '../components/addModal.vue'
   import moneyList from '../components/moneyList.vue'
+  import Time from '../utils/time'
   export default {
     name: 'money',
     components: {addButton, addModal, moneyList},
     methods: {
       ...mapActions([
-        'toggleAddModal'
+        'toggleAddModal',
+        'changeTitleDate',
+        'changeToday',
+        'changeRange',
+        'changeDatePickerShow',
       ]),
       showModal () {
         this.toggleAddModal(true)
+      },
+      backToday () {
+        const time = new Time(new Date())
+        const range = time.getRange()
+        this.changeTitleDate('今日')
+        this.changeToday(true)
+        this.changeRange(range)
+      },
+      showDatePicker () {
+        this.changeDatePickerShow(true)
       }
     },
     computed: {

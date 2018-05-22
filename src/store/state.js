@@ -6,19 +6,19 @@ export default {
   },
   footerItem: [
     {
-      name: 'money',
+      name: '记账簿',
       path: '/',
       iconName: 'cash-back-record',
       id: 0
     },
     {
-      name: 'note',
+      name: '笔记',
       path: '/note',
       iconName: 'records',
       id: 1
     },
     {
-      name: 'about',
+      name: '关于',
       path: '/about',
       iconName: 'home',
       id: 2
@@ -183,6 +183,7 @@ export default {
   isAddModelShow: false,
   moneyList: JSON.parse(localStorage.getItem('moneyList')) || [],
   isToday: true,
-  renderList: [],
-  range: ''
+  range: '',
+  titleDate: '今日',
+  datePickerShow: false,
 }

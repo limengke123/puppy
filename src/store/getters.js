@@ -25,7 +25,6 @@ export default {
     return (range) => {
       // const time = new Time(range)
       const [startTime, endTime] = range
-
       return getters.moneyLists.filter(item => item.date >= startTime && item.date < endTime)
     }
   },
@@ -35,5 +34,11 @@ export default {
   renderList (state, getters) {
     const range = state.range || new Time(new Date()).getRange()
     return getters.rangeMoneyLists(range)
+  },
+  titleDate (state) {
+    return state.titleDate
+  },
+  datePickerShow (state) {
+    return state.datePickerShow
   }
 }

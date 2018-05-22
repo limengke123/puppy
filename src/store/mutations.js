@@ -28,10 +28,13 @@ export default {
   [type.CHANGE_TODAY] (state, isToday) {
     state.isToday = isToday
   },
-  [type.CHANGE_RENDER_LIST] (state, renderList) {
-    state.renderList = renderList
-  },
   [type.CHANGE_RANGE] (state, range) {
     state.range = range
+  },
+  [type.CHANGE_TITLE_DATE] (state, dateString) {
+    state.titleDate = dateString
+  },
+  [type.CHANGE_DATEPICKER_SHOW] (state, show) {
+    state.datePickerShow = show
   }
 }

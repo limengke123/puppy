@@ -1,12 +1,19 @@
 <template lang="pug">
-  .wrapper hello about
+  .about-wrapper
+    building
 </template>
 
 <script>
-export default {
-  name: 'about'
-}
+  import building from '../components/baseComponent/building'
+  export default {
+    name: 'about',
+    components: {building}
+  }
 </script>
 
 <style lang="stylus" scoped>
+  @import '../style/mixin.styl'
+  .about-wrapper
+    padding-top 4.6rem
+    padding-bottom $bottomHeight
 </style>

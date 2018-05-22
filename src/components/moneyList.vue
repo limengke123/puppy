@@ -3,7 +3,7 @@
     cell.total
       template(slot="title")
         Icon.total-icon(name="gold-coin")
-        span.total-words(@touchstart="changeDate") {{time}}合计
+        span.total-words {{titleDate}}合计
       span.total-value ￥{{costTotal}}
     template(v-if="renderList.length")
       cell-swipe(v-for="(item,index) in renderList", :key="index", :right-width="65", :left-width="0", :on-close="(clickPosition, instance) => onClose(clickPosition, instance, item)")
@@ -39,9 +39,7 @@
     components: {CellSwipe, CellGroup, Cell, Icon, DatetimePicker},
     data () {
       return {
-        datePickerShow: false,
         currentDate: new Date(),
-        time: '今日',
       }
     },
     computed: {
@@ -50,6 +48,8 @@
         'rangeMoneyLists',
         'isToday',
         'renderList',
+        'titleDate',
+        'datePickerShow',
       ]),
       costTotal () {
         return this.renderList.reduce((accumulator, current) => accumulator + current.money, 0)
@@ -70,6 +70,8 @@
         'removeMoneyItem',
         'changeToday',
         'changeRange',
+        'changeTitleDate',
+        'changeDatePickerShow',
       ]),
       onClose (clickPosition, instance, item) {
         switch (clickPosition) {
@@ -95,26 +97,23 @@
             }).catch(console.log)
         }
       },
-      changeDate () {
-        this.datePickerShow = !this.datePickerShow
-      },
       onCancel () {
-        this.datePickerShow = false
+        this.changeDatePickerShow(false)
       },
       onConfirm (value) {
         const time = new Time(value)
         const today = new Date()
         if (time.getDateString() === `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`) {
           this.changeToday(true)
-          this.time = '今日'
+          this.changeTitleDate('今日')
         } else {
-          this.time = time.getDateString()
+          this.changeTitleDate(time.getDateString())
           this.changeToday(false)
         }
         const range = time.getRange()
         this.changeRange(range)
         // this.renderList = this.rangeMoneyLists(range)
-        this.datePickerShow = false
+        this.changeDatePickerShow(false)
       }
     }
   }
