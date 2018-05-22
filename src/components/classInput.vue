@@ -1,6 +1,6 @@
 <template lang="pug">
   .input-wrapper
-    van-field.field(:placeholder="`${classesDefaults[0]}(点击编辑)`", :value="value")
+    van-field.field(:placeholder="`${classesDefaults[0]}(点击编辑)`", :value="value", @input="onInput")
     van-tabs(v-model="tabs", @click="changeType")
       van-tab(v-for="(item, index) in classesDefaults", :title="item", :key="index")
 </template>
@@ -30,6 +30,9 @@
     methods: {
       changeType (index, title) {
         this.$emit('input', title)
+      },
+      onInput (value) {
+        this.$emit('input', value)
       }
     },
     watch: {
