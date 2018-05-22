@@ -29,17 +29,27 @@ pwa应用和用啥框架没有关系，主要是`service-work`，这里因为`vu
 
 ## 图片
 
-<img width="40%" src="img/IMG_1779.PNG" alt="首页" />
+gif动图:
 
-<details><summary>其他截图</summary><br>
-<p>操作</p>   
-<img width="40%" src="img/IMG_1780.PNG" alt="操作" />
+<img width="300px" src="img/v1.0.0/puppy.gif" alt="动图" />
+
+<details><summary>一些截图</summary><br>
 <br>
-<p>列表</p>
-<img width="40%" src="img/IMG_1781.PNG" alt="列表" />
+<img width="300px" src="img/v1.0.0/1.jpg" alt="首页" />
 <br>
-<p>日期筛选</p>
-<img width="40%" src="img/IMG_1782.PNG" alt="日期筛选" />
+<br>
+<br>
+<img width="300px" src="img/v1.0.0/2.jpg" alt="操作" />
+<br>
+<br>
+<br>
+<img width="300px" src="img/v1.0.0/3.jpg" alt="列表" />
+<br>
+<br>
+<br>
+<img width="300px" src="img/v1.0.0/4.jpg" alt="日期筛选" />
+<br>
+<br>
 <br>
 </details>
 
@@ -54,31 +64,25 @@ pwa应用和用啥框架没有关系，主要是`service-work`，这里因为`vu
 - [X] 首部、底部icon、文字优化
 - [ ] 第二个模块(Note)
 - [ ] 第三个模块(About)
+- [ ] 模块依赖分析与优化
 
 
-## Build Setup
+## 如何开始
 
 ``` bash
-# install dependencies
+# 安装依赖
 npm install
 
-# serve with hot reload at localhost:8080
+# 启动服务
 npm run dev
 
-# build for production with minification
+# 打包
 npm run build
 
-# build for production and view the bundle analyzer report
+# 带分析报告的打包
 npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## 部署
+
+因为没有涉及到服务相关，所以直接丢到`github page`上面就可以了，而且刚好还是`https`协议符合`pwa`的要求。
