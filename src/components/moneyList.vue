@@ -157,7 +157,7 @@
 </style>
 
 <style lang="stylus">
-  // 填组件的坑
+  // 填组件的坑 cell的修改
   .money-list-wrapper
     .total
       .van-cell__title
@@ -189,4 +189,12 @@
       text-align center
       line-height 44px
       background-color #F44
+</style>
+
+<style lang="stylus">
+  .money-list-wrapper
+    .van-picker__columns
+      background-color #f7faff
+    .van-picker__toolbar
+      background-color #f7faff
 </style>
