@@ -3,7 +3,7 @@
     .content
       Field.num(v-model="money", disabled)
       money-class
-      class-input(v-model="type")
+      class-input(v-model="type", ref="classInput")
     NumberKeyboard(
     :show="true",
     @input="changeMoney",
@@ -95,6 +95,10 @@
       reset () {
         this.money = '￥0'
         this.changeClasses(0)
+        this.type = ''
+        // 这里用一种极端的方式处理子组件的data
+        const classInput = this.$refs.classInput
+        classInput.tabs = 0
       }
     },
     mounted () {
