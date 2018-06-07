@@ -21,6 +21,7 @@
   import {Popup, NumberKeyboard, Field} from 'vant'
   import moneyClass from './moneyClass.vue'
   import classInput from './classInput.vue'
+  // import Time from '../utils/time'
   export default {
     components: {Popup, NumberKeyboard, Field, moneyClass, classInput},
     data () {
@@ -42,7 +43,7 @@
         next = next + ''
         if (prev === '￥0' && (next === '0' || next === '.')) return prev
         // if (prev[prev.length - 1] === '.' && (next === '.' || next === '0')) return prev
-        if (~(prev.indexOf('.')) && next === '.') return prev
+        if (~!!(prev.indexOf('.')) && next === '.') return prev
         if (prev.length === 2 && prev === '￥0') return '￥' + next
         return prev + next
       },
@@ -70,26 +71,33 @@
         if (!name) {
           name = this.classesDefaults[0]
         }
-        // 给每一条记录加上一个id,方便删除
-        const id = this.moneyLists.length > 0 ? (this.moneyLists[0].id + 1) : 0
+        const date = this.titleDate
+        // 自增id放到mutation中里面做了
         const obj = {
           type,
           iconName: this.currentClass.iconName,
           color: this.currentClass.color,
           money,
           name,
-          date: Date.now(),
-          id
+          editDate: Date.now(),
+          date,
         }
         // 这个是存到内存中去的
         this.addMoneyList(obj)
         // 这个存到localstorage中去的
-        this.$storage.addItem(obj)
+        /**
+         * 单独增加一条方法被废弃了
+         * 现在全量覆盖
+         * */
+        // this.$storage.addItem(obj)
+        this.$storage.saveAll(this.moneyLists)
         this.$toast.success({
           message: `添加成功`,
           duration: 1000
         })
+        // 隐藏弹出框
         this.toggleAddModal(false)
+        // 初始化数据,避免下次进来还是原来的数据
         this.reset()
       },
       reset () {
@@ -116,6 +124,7 @@
         'classesDefaults',
         'currentClass',
         'moneyLists',
+        'titleDate',
       ])
     }
   }

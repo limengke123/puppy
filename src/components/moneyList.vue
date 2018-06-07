@@ -3,7 +3,7 @@
     cell.total
       template(slot="title")
         Icon.total-icon(name="gold-coin")
-        span.total-words {{titleDate}}合计
+        span.total-words {{showDate}}合计
       span.total-value ￥{{costTotal}}
     template(v-if="renderList.length")
       cell-swipe(v-for="(item,index) in renderList", :key="index", :right-width="65", :left-width="0", :on-close="(clickPosition, instance) => onClose(clickPosition, instance, item)")
@@ -28,7 +28,6 @@
       v-show="datePickerShow",
       v-model="currentDate",
       )
-
 </template>
 
 <script>
@@ -64,6 +63,9 @@
       maxDate () {
         return new Date()
       },
+      showDate () {
+        return this.titleDate === new Time(new Date()).getDateString() ? '今日' : this.titleDate
+      }
     },
     methods: {
       ...mapActions([
@@ -90,7 +92,7 @@
                   duration: 1000
                 })
                 this.removeMoneyItem(item)
-                this.$storage.removeItem(item)
+                this.$storage.saveAll(this.moneyLists)
               } else {
                 instance.close()
               }

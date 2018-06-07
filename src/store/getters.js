@@ -1,4 +1,4 @@
-import Time from '../utils/time'
+// import Time from '../utils/time'
 export default {
   headerItem (state) {
     return state.headerItem
@@ -32,10 +32,17 @@ export default {
     return state.isToday
   },
   renderList (state, getters) {
-    const range = state.range || new Time(new Date()).getRange()
-    return getters.rangeMoneyLists(range)
+    const result = state.moneyList.filter(item => item.date === state.titleDate)
+    if (result.length > 0) {
+      return result[0] && result[0].list
+    } else {
+      return []
+    }
+    // const range = state.range || new Time(new Date()).getRange()
+    // return getters.rangeMoneyLists(range)
   },
   titleDate (state) {
+    // return state.titleDate === new Time(new Date()).getDateString() ? '今日' : state.titleDate
     return state.titleDate
   },
   datePickerShow (state) {

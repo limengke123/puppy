@@ -14,6 +14,12 @@ class Storage {
   getLists () {
     return this.parse(this.take(this.storageName))
   }
+  /**
+   * addItem
+   * removeItem
+   * 现在被废弃
+   * 现在直接全部覆盖操作
+   * */
   addItem (item) {
     const _before = this.getLists()
     _before.unshift(item)
@@ -23,6 +29,13 @@ class Storage {
     const _before = this.getLists()
     _before.splice(index, 1)
     this.save(this.stringify(_before))
+  }
+  /**
+   * 新增全部覆盖操作api
+   * saveAll
+   * */
+  saveAll (data) {
+    this.save(this.stringify(data))
   }
   parse (string) {
     return JSON.parse(string)

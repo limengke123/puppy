@@ -1,3 +1,4 @@
+import Time from '../utils/time'
 export default {
   headerItem: {
     title: '',
@@ -184,6 +185,7 @@ export default {
   moneyList: JSON.parse(localStorage.getItem('moneyList')) || [],
   isToday: true,
   range: '',
-  titleDate: '今日',
+  // 切换日期后显示的日期
+  titleDate: new Time(new Date()).getDateString(),
   datePickerShow: false,
 }
