@@ -27,6 +27,14 @@ const routes = [
       main: true
     },
     component: () => import(/* webpackChunkName: "money" */'../views/about')
+  },
+  {
+    path: '/statics',
+    name: 'statics',
+    meta: {
+      main: false
+    },
+    component: () => import(/* webpackChunkName: "money" */'../views/statics')
   }
 ]
 

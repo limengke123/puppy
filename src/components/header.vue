@@ -23,10 +23,11 @@ export default {
       'changeHeader'
     ]),
     onClickRight () {
-      this.$toast.fail({
-        message: '建设开发中',
-        duration: 1000
-      })
+      this.$router.push('/statics')
+      // this.$toast.fail({
+      //   message: '建设开发中',
+      //   duration: 1000
+      // })
     }
   },
   computed: {
