@@ -1,9 +1,9 @@
 <template lang="pug">
   .wrapper
     money-list
+    add-button(@handler="backToday", v-show="!isToday", text="<", :styles="{backgroundColor: '#ef6060', bottom: '20rem'}")
     add-button(@handler="showDatePicker", text="...", :styles="{backgroundColor: '#2b92d8', bottom: '15rem'}")
-    add-button(@handler="backToday", v-show="!isToday", text="<", :styles="{backgroundColor: '#ef6060'}")
-    add-button(@handler="showModal", v-show="isToday", text="+")
+    add-button(@handler="showModal", text="+")
     add-modal
 </template>
 
@@ -20,7 +20,6 @@
       ...mapActions([
         'toggleAddModal',
         'changeTitleDate',
-        'changeToday',
         'changeRange',
         'changeDatePickerShow',
       ]),
@@ -30,8 +29,7 @@
       backToday () {
         const time = new Time(new Date())
         const range = time.getRange()
-        this.changeTitleDate('今日')
-        this.changeToday(true)
+        this.changeTitleDate(new Time(new Date()).getDateString())
         this.changeRange(range)
       },
       showDatePicker () {

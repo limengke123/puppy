@@ -28,11 +28,6 @@ export default {
           } else {
             beforeList.list = [{id: 0, ...list}]
           }
-        } else {
-          arr.splice(index, 0, {
-            date: list.date,
-            list: [{id: 0, ...list}]
-          })
         }
       })
     } else {
@@ -43,6 +38,7 @@ export default {
     }
   },
   [type.RMEOVE_MONEY_ITEM] (state, item) {
+    // 删除记录
     const hasThisDate = state.moneyList.some(list => list.date === item.date)
     if (hasThisDate) {
       state.moneyList.forEach((val) => {
@@ -55,9 +51,6 @@ export default {
         }
       })
     }
-  },
-  [type.CHANGE_TODAY] (state, isToday) {
-    state.isToday = isToday
   },
   [type.CHANGE_RANGE] (state, range) {
     state.range = range

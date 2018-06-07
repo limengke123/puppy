@@ -70,7 +70,6 @@
     methods: {
       ...mapActions([
         'removeMoneyItem',
-        'changeToday',
         'changeRange',
         'changeTitleDate',
         'changeDatePickerShow',
@@ -106,11 +105,9 @@
         const time = new Time(value)
         const today = new Date()
         if (time.getDateString() === `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`) {
-          this.changeToday(true)
-          this.changeTitleDate('今日')
+          this.changeTitleDate(new Time(new Date()).getDateString())
         } else {
           this.changeTitleDate(time.getDateString())
-          this.changeToday(false)
         }
         const range = time.getRange()
         this.changeRange(range)

@@ -183,7 +183,6 @@ export default {
   ],
   isAddModelShow: false,
   moneyList: JSON.parse(localStorage.getItem('moneyList')) || [],
-  isToday: true,
   range: '',
   // 切换日期后显示的日期
   titleDate: new Time(new Date()).getDateString(),

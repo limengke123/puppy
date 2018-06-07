@@ -1,4 +1,4 @@
-// import Time from '../utils/time'
+import Time from '../utils/time'
 export default {
   headerItem (state) {
     return state.headerItem
@@ -28,16 +28,22 @@ export default {
       return getters.moneyLists.filter(item => item.date >= startTime && item.date < endTime)
     }
   },
-  isToday (state) {
-    return state.isToday
+  isToday (state, getters) {
+    return getters.titleDate === new Time(new Date()).getDateString()
   },
   renderList (state, getters) {
-    const result = state.moneyList.filter(item => item.date === state.titleDate)
-    if (result.length > 0) {
-      return result[0] && result[0].list
+    const filterList = state.moneyList.filter(list => list.date === getters.titleDate)
+    if (filterList[0] && filterList[0].list) {
+      return filterList[0].list
     } else {
       return []
     }
+    // const result = state.moneyList.filter(item => item.date === state.titleDate)
+    // if (result.length > 0) {
+    //   return result[0] && result[0].list
+    // } else {
+    //   return []
+    // }
     // const range = state.range || new Time(new Date()).getRange()
     // return getters.rangeMoneyLists(range)
   },

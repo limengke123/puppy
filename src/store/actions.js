@@ -15,9 +15,6 @@ export default {
   removeMoneyItem ({commit}, item) {
     commit(type.RMEOVE_MONEY_ITEM, item)
   },
-  changeToday ({commit}, isToday) {
-    commit(type.CHANGE_TODAY, isToday)
-  },
   changeRange ({commit}, range) {
     commit(type.CHANGE_RANGE, range)
   },
