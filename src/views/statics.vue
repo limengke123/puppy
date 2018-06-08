@@ -69,8 +69,13 @@ export default {
       this.datePickerShow = false
     },
     onConfirm () {
+      // this.lineSource = this.lineFormatSource
+      this.lineChart.clear()
+      this.lineChart.source(this.lineFormatSource)
+      this.lineChart.line().position('day*value')
+      this.lineChart.render()
+      console.log(this)
       this.datePickerShow = false
-      console.log(this.currentResult)
     },
     createLineChart () {
       const chart = new F2.Chart({
@@ -83,7 +88,7 @@ export default {
         value: {
           // 纵轴最大最小,以及坐标稀度
           tickCount: 5,
-          min: 0
+          // min: 0
         },
         day: {
           // 横坐标稀度
@@ -121,6 +126,8 @@ export default {
         lineWidth: 1
       })
       chart.render()
+      // 挂到实例上面
+      this.lineChart = chart
     },
     createPieChart () {
       let Util = F2.Util
@@ -321,7 +328,7 @@ export default {
         }
       })
       chart.render()
-    }
+    },
   },
   computed: {
     ...mapGetters([
@@ -333,9 +340,21 @@ export default {
     currentYear () {
       return this.currentDate.getFullYear()
     },
+    currentMonthMaxDay () {
+      /**
+       * 获取当月天数
+       * */
+      return new Date(this.currentYear, this.currentMonth, 0).getDate()
+    },
     // 当前数据源
     currentResult () {
       return this.filterData({year: this.currentYear, month: this.currentMonth})
+    },
+    lineFormatSource () {
+      let result = new Array(this.currentMonthMaxDay).fill(Object.create(null))
+      const formatedData = this.currentResult.map(item => ({day: item.date, value: item.list.reduce((accument, val) => accument + val.money, 0)}))
+      /* eslint-disable */
+      return result.map((item, index) => ({day: `${this.currentMonth}/${index}`, value: formatedData.filter(item => item.date === `${this.currentYear}/${index + 1}`)[0] && formatedData.filter(item => item.date === `${this.currentYear}/${index + 1}`)[0].value || 0}) )
     },
     maxDate () {
       return new Date()
