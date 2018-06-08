@@ -1,15 +1,37 @@
 <template lang="pug">
   .statics-wrapper
-    canvas(id="myChart")
+    nav-bar.nav-bar-statics(
+      title="数据统计",
+      left-text="返回",
+      right-text="选择月份",
+      left-arrow,
+      @click-left="onClickLeft",
+      @click-right="onClickRight")
+    .statcis-main-wrapper
+      canvas(id="lineChart")
+      canvas(id="pieChart")
+    transition(name="van-slide-bottom")
+      DatetimePicker.date-picker(
+        type="year-month",
+        @cancel="onCancel",
+        @confirm="onConfirm",
+        :min-date="minDate",
+        :max-date="maxDate",
+        v-show="datePickerShow",
+        v-model="currentDate",
+      )
 </template>
 
 <script>
 import F2 from '@antv/f2'
+import {mapGetters} from 'vuex'
+import {NavBar, DatetimePicker} from 'vant'
 export default {
   name: 'statics',
+  components: {NavBar, DatetimePicker},
   data () {
     return {
-      source: [{
+      lineSource: [{
         day: '周一',
         value: 300
       }, {
@@ -30,56 +52,329 @@ export default {
       }, {
         day: '周日',
         value: 900
-      }]
+      }],
+      datePickerShow: false,
+      currentDate: new Date()
     }
   },
-  mounted () {
-    const chart = new F2.Chart({
-      id: 'myChart',
-      width: window.innerWidth,
-      height: window.innerWidth > window.innerHeight ? window.innerHeight - 54 : window.innerWidth * 0.707,
-      pixelRatio: window.devicePixelRatio, // 指定分辨率
-    })
-    chart.source(this.source, {
-      value: {
-        tickCount: 5,
-        min: 0
-      },
-      day: {
-        range: [0, 1]
-      }
-    })
-    chart.tooltip({
-      showCrosshairs: true,
-      showItemMarker: false,
-      onShow: function onShow (ev) {
-        var items = ev.items
-        items[0].name = null
-        items[0].value = '$ ' + items[0].value
-      }
-    })
-    chart.axis('day', {
-      label: function label (text, index, total) {
-        var textCfg = {}
-        if (index === 0) {
-          textCfg.textAlign = 'left'
-        } else if (index === total - 1) {
-          textCfg.textAlign = 'right'
+  methods: {
+    onClickLeft () {
+      this.$router.push('/')
+    },
+    onClickRight () {
+      this.currentDate = new Date()
+      this.datePickerShow = true
+    },
+    onCancel () {
+      this.datePickerShow = false
+    },
+    onConfirm () {
+      this.datePickerShow = false
+      console.log(this.currentResult)
+    },
+    createLineChart () {
+      const chart = new F2.Chart({
+        id: 'lineChart',
+        width: window.innerWidth,
+        height: window.innerWidth > window.innerHeight ? window.innerHeight - 54 : window.innerWidth * 0.707,
+        pixelRatio: window.devicePixelRatio, // 指定分辨率
+      })
+      chart.source(this.lineSource, {
+        value: {
+          // 纵轴最大最小,以及坐标稀度
+          tickCount: 5,
+          min: 0
+        },
+        day: {
+          // 横坐标稀度
+          range: [0, 1]
         }
-        return textCfg
+      })
+      chart.tooltip({
+        // 显示竖线
+        showCrosshairs: true,
+        // 显示的时候多个小蓝点
+        showItemMarker: false,
+        onShow: function onShow (ev) {
+          // 显示的样子
+          let items = ev.items
+          items[0].name = null
+          items[0].value = '$ ' + items[0].value
+        }
+      })
+      chart.axis('day', {
+        label: function label (text, index, total) {
+          let textCfg = {}
+          if (index === 0) {
+            textCfg.textAlign = 'left'
+          } else if (index === total - 1) {
+            textCfg.textAlign = 'right'
+          }
+          return textCfg
+        }
+      })
+      // 横纵坐标线对应值
+      chart.line().position('day*value')
+      // 横纵坐标点对应值
+      chart.point().position('day*value').style({
+        stroke: '#fff',
+        lineWidth: 1
+      })
+      chart.render()
+    },
+    createPieChart () {
+      let Util = F2.Util
+      let G = F2.G
+      let Group = G.Group
+
+      function drawLabel (shape, coord, canvas) {
+        let center = coord.center
+        let origin = shape.get('origin')
+        let points = origin.points
+        let x1 = (points[2].x - points[1].x) * 0.75 + points[1].x
+        let x2 = (points[2].x - points[1].x) * 1.8 + points[1].x
+        let y = (points[0].y + points[1].y) / 2
+        let point1 = coord.convertPoint({
+          x: x1,
+          y: y
+        })
+        let point2 = coord.convertPoint({
+          x: x2,
+          y: y
+        })
+
+        let group = new Group()
+        group.addShape('Line', {
+          attrs: {
+            x1: point1.x,
+            y1: point1.y,
+            x2: point2.x,
+            y2: point2.y,
+            lineDash: [0, 2, 2],
+            stroke: '#808080'
+          }
+        })
+        let text = group.addShape('Text', {
+          attrs: {
+            x: point2.x,
+            y: point2.y,
+            text: origin._origin.type + '  ' + origin._origin.cost + ' 元',
+            fill: '#808080',
+            textAlign: 'start',
+            textBaseline: 'bottom'
+          }
+        })
+        let textWidth = text.getBBox().width
+        let baseLine = group.addShape('Line', {
+          attrs: {
+            x1: point2.x,
+            y1: point2.y,
+            x2: point2.x,
+            y2: point2.y,
+            stroke: '#808080'
+          }
+        })
+        if (point2.x > center.x) {
+          baseLine.attr('x2', point2.x + textWidth)
+        } else if (point2.x < center.x) {
+          text.attr('textAlign', 'end')
+          baseLine.attr('x2', point2.x - textWidth)
+        } else {
+          text.attr('textAlign', 'center')
+          text.attr('textBaseline', 'top')
+        }
+        canvas.add(group)
+        shape.label = group
       }
-    })
-    chart.line().position('day*value')
-    chart.point().position('day*value').style({
-      stroke: '#fff',
-      lineWidth: 1
-    })
-    chart.render()
+
+      let data = [{
+        type: '饮食',
+        cost: 669.47,
+        a: '1'
+      }, {
+        type: '服饰美容',
+        cost: 338,
+        a: '1'
+      }, {
+        type: '健康',
+        cost: 118.5,
+        a: '1'
+      }, {
+        type: '生活用品',
+        cost: 78.64,
+        a: '1'
+      }, {
+        type: '其他',
+        cost: 14.9,
+        a: '1'
+      }, {
+        type: '交通出行',
+        cost: 8.7,
+        a: '1'
+      }]
+
+      let sum = 0
+      data.map(function (obj) {
+        sum += obj.cost
+      })
+      let chart = new F2.Chart({
+        id: 'pieChart',
+        width: window.innerWidth,
+        height: window.innerWidth > window.innerHeight ? window.innerHeight - 54 : window.innerWidth * 0.707,
+        pixelRatio: window.devicePixelRatio
+      })
+      chart.source(data)
+      let lastClickedShape
+      chart.legend({
+        position: 'bottom',
+        offsetY: -5,
+        marker: 'square',
+        align: 'center',
+        onClick: function onClick (ev) {
+          let clickedItem = ev.clickedItem
+          let dataValue = clickedItem.get('dataValue')
+          let canvas = chart.get('canvas')
+          let coord = chart.get('coord')
+          let geom = chart.get('geoms')[0]
+          let container = geom.get('container')
+          let shapes = geom.get('shapes') // 只有带精细动画的 geom 才有 shapes 这个属性
+
+          let clickedShape
+          // 找到被点击的 shape
+          Util.each(shapes, function (shape) {
+            var origin = shape.get('origin')
+            if (origin && origin._origin.type === dataValue) {
+              clickedShape = shape
+              return false
+            }
+          })
+
+          if (lastClickedShape) {
+            lastClickedShape.animate().to({
+              attrs: {
+                lineWidth: 0
+              },
+              duration: 200
+            }).onStart(function () {
+              if (lastClickedShape.label) {
+                lastClickedShape.label.hide()
+              }
+            }).onEnd(function () {
+              lastClickedShape.set('selected', false)
+            })
+          }
+
+          if (clickedShape.get('selected')) {
+            clickedShape.animate().to({
+              attrs: {
+                lineWidth: 0
+              },
+              duration: 200
+            }).onStart(function () {
+              if (clickedShape.label) {
+                clickedShape.label.hide()
+              }
+            }).onEnd(function () {
+              clickedShape.set('selected', false)
+            })
+          } else {
+            var color = clickedShape.attr('fill')
+            clickedShape.animate().to({
+              attrs: {
+                lineWidth: 5
+              },
+              duration: 350,
+              easing: 'bounceOut'
+            }).onStart(function () {
+              clickedShape.attr('stroke', color)
+              clickedShape.set('zIndex', 1)
+              container.sort()
+            }).onEnd(function () {
+              clickedShape.set('selected', true)
+              clickedShape.set('zIndex', 0)
+              container.sort()
+              lastClickedShape = clickedShape
+              if (clickedShape.label) {
+                clickedShape.label.show()
+              } else {
+                drawLabel(clickedShape, coord, canvas)
+              }
+              canvas.draw()
+            })
+          }
+        }
+      })
+      chart.coord('polar', {
+        transposed: true,
+        innerRadius: 0.7,
+        radius: 0.85
+      })
+      chart.axis(false)
+      chart.tooltip(false)
+      chart.interval().position('a*cost').color('type', ['#1890FF', '#13C2C2', '#2FC25B', '#FACC14', '#F04864', '#8543E0']).adjust('stack')
+
+      chart.guide().text({
+        position: ['50%', '50%'],
+        content: sum.toFixed(2),
+        style: {
+          fontSize: 24
+        }
+      })
+      chart.render()
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'filterData'
+    ]),
+    currentMonth () {
+      return this.currentDate.getMonth() + 1
+    },
+    currentYear () {
+      return this.currentDate.getFullYear()
+    },
+    // 当前数据源
+    currentResult () {
+      return this.filterData({year: this.currentYear, month: this.currentMonth})
+    },
+    maxDate () {
+      return new Date()
+    },
+    minDate () {
+      const date = Date.now()
+      const before = date - 2 * 365 * 24 * 60 * 60 * 1000
+      return new Date(before)
+    }
+  },
+  destroyed () {
+    console.log(`destroy`)
+  },
+  mounted () {
+    this.createLineChart()
+    this.createPieChart()
   }
 }
 </script>
 
 <style lang="stylus" scoped>
   .statics-wrapper
-    background #fff
+    font-size 2rem
+    .nav-bar-statics
+      position fixed
+      width 100%
+    .statcis-main-wrapper
+      padding-top 3.83rem
+    .date-picker
+      position fixed
+      bottom 0
+      width 100%
+      z-index 999
+</style>
+
+<style lang="stylus">
+  .statics-wrapper
+    .van-picker__columns
+      background-color #f7faff
+    .van-picker__toolbar
+      background-color #f7faff
 </style>

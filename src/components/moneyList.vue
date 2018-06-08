@@ -99,6 +99,8 @@
         }
       },
       onCancel () {
+        // 重置日期选择器的时间
+        this.currentDate = new Date()
         this.changeDatePickerShow(false)
       },
       onConfirm (value) {
@@ -112,6 +114,8 @@
         const range = time.getRange()
         this.changeRange(range)
         // this.renderList = this.rangeMoneyLists(range)
+        // 重置日期选择器的时间
+        this.currentDate = new Date()
         this.changeDatePickerShow(false)
       }
     }

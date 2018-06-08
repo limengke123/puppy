@@ -23,7 +23,6 @@ export default {
   },
   rangeMoneyLists (state, getters) {
     return (range) => {
-      // const time = new Time(range)
       const [startTime, endTime] = range
       return getters.moneyLists.filter(item => item.date >= startTime && item.date < endTime)
     }
@@ -38,20 +37,19 @@ export default {
     } else {
       return []
     }
-    // const result = state.moneyList.filter(item => item.date === state.titleDate)
-    // if (result.length > 0) {
-    //   return result[0] && result[0].list
-    // } else {
-    //   return []
-    // }
-    // const range = state.range || new Time(new Date()).getRange()
-    // return getters.rangeMoneyLists(range)
   },
   titleDate (state) {
-    // return state.titleDate === new Time(new Date()).getDateString() ? '今日' : state.titleDate
     return state.titleDate
   },
   datePickerShow (state) {
     return state.datePickerShow
+  },
+  // 拿到筛选后的数据
+  filterData (state) {
+    /**
+     * 按照年月日查找数组
+     * */
+    const timeHelper = (timeStr) => ({year: +timeStr.split('/')[0], month: +timeStr.split('/')[1]})
+    return ({year, month}) => state.moneyList.filter(list => (timeHelper(list.date).year === year && timeHelper(list.date).month === month))
   }
 }
