@@ -9,7 +9,8 @@
       @click-right="onClickRight")
     .statcis-main-wrapper
       canvas(id="lineChart")
-      canvas(id="pieChart")
+      <!--canvas(id="pieChart")-->
+      canvas(id="pieChart2")
     transition(name="van-slide-bottom")
       DatetimePicker.date-picker(
         type="year-month",
@@ -168,7 +169,7 @@ export default {
           let clickedShape
           // 找到被点击的 shape
           Util.each(shapes, function (shape) {
-            var origin = shape.get('origin')
+            let origin = shape.get('origin')
             if (origin && origin._origin.type === dataValue) {
               clickedShape = shape
               return false
@@ -204,7 +205,7 @@ export default {
               clickedShape.set('selected', false)
             })
           } else {
-            var color = clickedShape.attr('fill')
+            let color = clickedShape.attr('fill')
             clickedShape.animate().to({
               attrs: {
                 lineWidth: 5
@@ -413,7 +414,7 @@ export default {
           let clickedShape
           // 找到被点击的 shape
           Util.each(shapes, function (shape) {
-            var origin = shape.get('origin')
+            let origin = shape.get('origin')
             if (origin && origin._origin.type === dataValue) {
               clickedShape = shape
               return false
@@ -449,7 +450,7 @@ export default {
               clickedShape.set('selected', false)
             })
           } else {
-            var color = clickedShape.attr('fill')
+            let color = clickedShape.attr('fill')
             clickedShape.animate().to({
               attrs: {
                 lineWidth: 5
@@ -497,6 +498,79 @@ export default {
        * */
       this.pieChart = chart
     },
+    createPieChart2 () {
+      let map = {
+        '芳华': '40%',
+        '妖猫传': '20%',
+        '机器之血': '18%',
+        '心理罪': '15%',
+        '寻梦环游记': '5%',
+        '其他': '2%'
+      }
+      let data = [{
+        name: '芳华',
+        percent: 0.4,
+        a: '1'
+      }, {
+        name: '妖猫传',
+        percent: 0.2,
+        a: '1'
+      }, {
+        name: '机器之血',
+        percent: 0.18,
+        a: '1'
+      }, {
+        name: '心理罪',
+        percent: 0.15,
+        a: '1'
+      }, {
+        name: '寻梦环游记',
+        percent: 0.05,
+        a: '1'
+      }, {
+        name: '其他',
+        percent: 0.02,
+        a: '1'
+      }]
+      let chart = new F2.Chart({
+        id: 'pieChart2',
+        width: window.innerWidth,
+        height: window.innerWidth > window.innerHeight ? window.innerHeight - 54 : window.innerWidth * 0.707,
+        pixelRatio: window.devicePixelRatio
+      })
+      chart.source(data, {
+        percent: {
+          formatter: function formatter (val) {
+            return val * 100 + '%'
+          }
+        }
+      })
+      chart.legend({
+        position: 'right',
+        itemFormatter: function itemFormatter (val) {
+          return val + '  ' + map[val]
+        }
+      })
+      chart.tooltip(false)
+      chart.coord('polar', {
+        transposed: true,
+        radius: 0.85
+      })
+      chart.axis(false)
+      chart.interval().position('a*percent').color('name', ['#1890FF', '#13C2C2', '#2FC25B', '#FACC14', '#F04864', '#8543E0']).adjust('stack').style({
+        lineWidth: 1,
+        stroke: '#fff',
+        lineJoin: 'round',
+        lineCap: 'round'
+      }).animate({
+        appear: {
+          duration: 1200,
+          easing: 'bounceOut'
+        }
+      })
+
+      chart.render()
+    }
   },
   computed: {
     ...mapGetters([
@@ -572,7 +646,8 @@ export default {
   },
   mounted () {
     this.createLineChart()
-    this.createPieChart()
+    // this.createPieChart()
+    this.createPieChart2()
   }
 }
 </script>
