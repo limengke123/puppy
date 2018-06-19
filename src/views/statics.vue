@@ -41,53 +41,17 @@ export default {
       this.$router.push('/')
     },
     onClickRight () {
-      // this.currentDate = new Date()
       this.datePickerShow = true
     },
     onCancel () {
       this.datePickerShow = false
     },
     onConfirm () {
-      // this.lineSource = this.lineFormatSource
-      this.reRenderLineChart()
-      // this.reRenderPieChart()
-      this.reRenderPieChart()
-      this.datePickerShow = false
-    },
-    reRenderLineChart () {
       this.createLineChart(this.lineFormatSource)
-    },
-    reRenderPieChart () {
-      let datas = [{
-        name: '芳华',
-        percent: 0.4,
-        a: '1'
-      }, {
-        name: '妖猫传',
-        percent: 0.2,
-        a: '1'
-      }, {
-        name: '机器之血',
-        percent: 0.18,
-        a: '1'
-      }, {
-        name: '心理罪',
-        percent: 0.15,
-        a: '1'
-      }, {
-        name: '寻梦环游记',
-        percent: 0.05,
-        a: '1'
-      }, {
-        name: '测试',
-        percent: Math.random(),
-        a: '1'
-      }, {
-        name: '其他',
-        percent: 0.02,
-        a: '1'
-      }]
-      this.createPieChart(datas)
+      this.createPieChart(this.pieFormatSource)
+      this.datePickerShow = false
+      console.log(this.lineFormatSource)
+      console.log(this.pieFormatSource)
     },
     createLineChart (data) {
       data = data || this.lineFormatSource
@@ -140,49 +104,9 @@ export default {
       //   lineWidth: 1
       // })
       chart.render()
-      // 挂到实例上面
-      this.lineChart = chart
     },
     createPieChart (data) {
-      let map = {
-        '芳华': '40%',
-        '妖猫传': '20%',
-        '机器之血': '18%',
-        '心理罪': '15%',
-        '寻梦环游记': '5%',
-        '测试': '5%',
-        '其他': '2%'
-      }
-      let datas = [{
-        name: '芳华',
-        percent: 0.4,
-        a: '1'
-      }, {
-        name: '妖猫传',
-        percent: 0.2,
-        a: '1'
-      }, {
-        name: '机器之血',
-        percent: 0.18,
-        a: '1'
-      }, {
-        name: '心理罪',
-        percent: 0.15,
-        a: '1'
-      }, {
-        name: '寻梦环游记',
-        percent: 0.05,
-        a: '1'
-      }, {
-        name: '测试',
-        percent: Math.random(),
-        a: '1'
-      }, {
-        name: '其他',
-        percent: 0.02,
-        a: '1'
-      }]
-      data = data || datas
+      data = data || this.pieFormatSource
       let chart = new F2.Chart({
         id: 'pieChart2',
         width: window.innerWidth,
@@ -199,7 +123,7 @@ export default {
       chart.legend({
         position: 'right',
         itemFormatter: function itemFormatter (val) {
-          return val + '  ' + map[val]
+          return val + '  ' + data.filter(item => item.type === val)[0].percentage
         }
       })
       chart.tooltip(false)
@@ -208,7 +132,7 @@ export default {
         radius: 0.85
       })
       chart.axis(false)
-      chart.interval().position('a*percent').color('name', ['#1890FF', '#13C2C2', '#2FC25B', '#FACC14', '#F04864', '#8543E0']).adjust('stack').style({
+      chart.interval().position('a*percent').color('type', ['#1890FF', '#13C2C2', '#2FC25B', '#FACC14', '#F04864', '#8543E0', '#CC11C2', '#C5B22F', '#CCFA54']).adjust('stack').style({
         lineWidth: 1,
         stroke: '#fff',
         lineJoin: 'round',
@@ -220,7 +144,6 @@ export default {
         }
       })
       chart.render()
-      this.pieChart = chart
     }
   },
   computed: {
@@ -282,6 +205,44 @@ export default {
           }
         }
       })
+    },
+    pieFormatSource () {
+      const result = this.currentResult.reduce((accu, current) => {
+        return accu.concat(current.list)
+      }, []).reduce((accu, current) => {
+        if (current.iconName === 'income') {
+          /**
+           * income是增加收入,与这里统计是相反的,不接入统计
+           * */
+          return accu
+        }
+        if (accu.some(item => item.iconName === current.iconName)) {
+          accu.filter(item => item.iconName === current.iconName)[0].money += current.money
+        } else {
+          accu.push({
+            money: current.money,
+            type: current.type,
+            iconName: current.iconName,
+            a: '1',
+          })
+        }
+        return accu
+      }, [])
+      const totalMoney = result.reduce((accu, current) => accu + current.money, 0)
+      let accuTotal = 0
+      return result.map((item, index, arr) => {
+        if (index !== arr.length - 1) {
+          const percent = (+(item.money / totalMoney).toFixed(3)) * 1000
+          accuTotal += percent
+          return {...item, percent: percent}
+        } else {
+          /**
+           * 100是解决小数点减法的问题
+           * 真的蛋疼
+           * */
+          return {...item, percent: 1000 - accuTotal}
+        }
+      }).map(item => ({...item, percent: item.percent / 10, percentage: `${item.percent / 10}%`}))
     },
     maxDate () {
       return new Date()
