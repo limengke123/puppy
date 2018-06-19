@@ -194,7 +194,7 @@ export default {
       const formatedData = this.currentResult.map(item => ({day: item.date, value: item.list.reduce((accument, val) => accument + val.money, 0)}))
       /* eslint-disable */
       // return result.map((item, index) => ({day: `${this.currentMonth}/${index}`, value: formatedData.filter(item => item.date === `${this.currentYear}/${index + 1}`)[0] && formatedData.filter(item => item.date === `${this.currentYear}/${index + 1}`)[0].value || 0}) )
-      return result.map(( current, index) => {
+      let _result = result.map(( current, index) => {
         let filterData = formatedData.filter(item => item.day === `${this.currentYear}/${this.currentMonth}/${index + 1}`)
         if (filterData.length > 0) {
           return filterData[0]
@@ -205,6 +205,7 @@ export default {
           }
         }
       })
+      return _result.every(item => item.value === 0) ? [] : _result
     },
     pieFormatSource () {
       const result = this.currentResult.reduce((accu, current) => {
