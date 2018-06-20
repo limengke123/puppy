@@ -7,10 +7,16 @@
       left-arrow,
       @click-left="onClickLeft",
       @click-right="onClickRight")
-    .statcis-main-wrapper
-      canvas(id="lineChart")
-      <!--canvas(id="pieChart")-->
-      canvas(id="pieChart2")
+    template(v-if="!hasNoResult")
+      .statics-main-wrapper
+        canvas(id="lineChart")
+        <!--canvas(id="pieChart")-->
+        p.totalMoney {{currentYear}} {{currentMonthChi}} 总花费 ￥{{-totalMoney / 1000}}
+        canvas(id="pieChart")
+    template(v-else)
+      .no-found
+        i.iconfont.icon-not-found.icon
+        .content 没有记录
     transition(name="van-slide-bottom")
       DatetimePicker.date-picker(
         type="year-month",
@@ -33,7 +39,9 @@ export default {
   data () {
     return {
       datePickerShow: false,
-      currentDate: new Date()
+      currentDate: new Date(),
+      hasNoResult: true,
+      totalMoney: 0
     }
   },
   methods: {
@@ -47,15 +55,24 @@ export default {
       this.datePickerShow = false
     },
     onConfirm () {
-      this.createLineChart(this.lineFormatSource)
-      this.createPieChart(this.pieFormatSource)
+      if (this.lineFormatSource.length === 0 && this.pieFormatSource.length === 0) {
+        this.hasNoResult = true
+      } else {
+        this.hasNoResult = false
+        this.$nextTick(() => {
+          this.createLineChart()
+          this.createPieChart()
+        })
+      }
       this.datePickerShow = false
-      console.log(this.lineFormatSource)
-      console.log(this.pieFormatSource)
     },
-    createLineChart (data) {
-      data = data || this.lineFormatSource
-      const chart = new F2.Chart({
+    createLineChart () {
+      const data = this.lineFormatSource
+      if (this.lineChart) {
+        this.lineChart.clear()
+        this.lineChart = null
+      }
+      const chart = this.lineChart = new F2.Chart({
         id: 'lineChart',
         width: window.innerWidth,
         height: window.innerWidth > window.innerHeight ? window.innerHeight - 54 : window.innerWidth * 0.707,
@@ -105,15 +122,15 @@ export default {
       // })
       chart.render()
     },
-    createPieChart (data) {
-      data = data || this.pieFormatSource
+    createPieChart () {
+      const data = this.pieFormatSource
       let chart = new F2.Chart({
-        id: 'pieChart2',
+        id: 'pieChart',
         width: window.innerWidth,
         height: window.innerWidth > window.innerHeight ? window.innerHeight - 54 : window.innerWidth * 0.707,
         pixelRatio: window.devicePixelRatio
       })
-      chart.source(data, {
+      chart.source(this.pieFormatSource, {
         percent: {
           formatter: function formatter (val) {
             return val * 100 + '%'
@@ -123,7 +140,8 @@ export default {
       chart.legend({
         position: 'right',
         itemFormatter: function itemFormatter (val) {
-          return val + '  ' + data.filter(item => item.type === val)[0].percentage
+          // return `${val}  ￥${-data.filter(item => item.type === val)[0].money}  ${data.filter(item => item.type === val)[0].percentage}`
+          return `${val}  ￥${-data.filter(item => item.type === val)[0].money}  ${data.filter(item => item.type === val)[0].percentage}`
         }
       })
       chart.tooltip(false)
@@ -206,6 +224,7 @@ export default {
         }
       })
       return _result.every(item => item.value === 0) ? [] : _result
+      // return _result
     },
     pieFormatSource () {
       const result = this.currentResult.reduce((accu, current) => {
@@ -218,10 +237,13 @@ export default {
           return accu
         }
         if (accu.some(item => item.iconName === current.iconName)) {
-          accu.filter(item => item.iconName === current.iconName)[0].money += current.money
+          accu.filter(item => item.iconName === current.iconName)[0].money += current.money * 1000
         } else {
           accu.push({
-            money: current.money,
+            /**
+             * 解决小数点问题
+             * */
+            money: current.money * 1000,
             type: current.type,
             iconName: current.iconName,
             a: '1',
@@ -229,19 +251,22 @@ export default {
         }
         return accu
       }, [])
-      const totalMoney = result.reduce((accu, current) => accu + current.money, 0)
+      const totalMoney = this.totalMoney = result.reduce((accu, current) => accu + current.money, 0)
       let accuTotal = 0
       return result.map((item, index, arr) => {
         if (index !== arr.length - 1) {
+          /**
+           * 前面小数点的1000除回来
+           * */
           const percent = (+(item.money / totalMoney).toFixed(3)) * 1000
           accuTotal += percent
-          return {...item, percent: percent}
+          return {...item, percent: percent, money: item.money / 1000}
         } else {
           /**
            * 100是解决小数点减法的问题
            * 真的蛋疼
            * */
-          return {...item, percent: 1000 - accuTotal}
+          return {...item, percent: 1000 - accuTotal, money: item.money / 1000}
         }
       }).map(item => ({...item, percent: item.percent / 10, percentage: `${item.percent / 10}%`}))
     },
@@ -258,8 +283,15 @@ export default {
     console.log(`destroy`)
   },
   mounted () {
-    this.createLineChart()
-    this.createPieChart()
+    if (this.lineFormatSource.length === 0 && this.pieFormatSource.length === 0) {
+      this.hasNoResult = true
+    } else {
+      this.hasNoResult = false
+      this.$nextTick(() => {
+        this.createLineChart()
+        this.createPieChart()
+      })
+    }
   }
 }
 </script>
@@ -270,8 +302,19 @@ export default {
     .nav-bar-statics
       position fixed
       width 100%
-    .statcis-main-wrapper
+    .statics-main-wrapper
       padding-top 3.83rem
+      .totalMoney
+        margin 0
+    .no-found
+      // margin-top 2rem
+      padding-top 10rem
+      .content
+        font-size 2rem
+        color $font
+      .icon-not-found
+        font-size 15rem
+        color $font
     .date-picker
       position fixed
       bottom 0

@@ -43,7 +43,7 @@
         next = next + ''
         if (prev === '￥0' && (next === '0' || next === '.')) return prev
         // if (prev[prev.length - 1] === '.' && (next === '.' || next === '0')) return prev
-        if (~!!(prev.indexOf('.')) && next === '.') return prev
+        if (!!~(prev.indexOf('.')) && next === '.') return prev
         if (prev.length === 2 && prev === '￥0') return '￥' + next
         return prev + next
       },
